@@ -1,0 +1,74 @@
+?edit
+?test
+
+http://localhost:8089/FitNesse.SuiteAcceptanceTests.SuiteWidgetTests?suite
+http://localhost:8089/FitNesse.SuiteAcceptanceTests
+
+Integrating with version control
+- http://stackoverflow.com/questions/249580/how-do-i-add-fitnesse-pages-to-version-control
+- http://stackoverflow.com/questions/8123042/fitnesse-test-history-with-version-control
+
+A subwiki test page:
+
+link: http://localhost:8089/FitNesse.JellyTest?edit
+
+content:
+
+!define TEST_SYSTEM {slim}
+!path fitnesse.jar
+!*> setup
+|import|
+|fitnesse.slim.test|
+|fitnesse.fixtures|
+
+*!
+
+!contents -R2 -g -p -f -h
+|should I buy milk|
+|cash in wallet|credit card|pints of milk remaining|go to store?|
+|      0       |    no     |      0                |    no      |
+|      10      |    no     |      0                |    yes     |
+|      0       |    yes    |      0                |    yes     |
+|      10      |    yes    |      0                |    yes     |
+|      0       |    no     |      1                |    no      |
+|      10      |    no     |      1                |    no      |
+|      0       |    yes    |      1                |    no      |
+|      10      |    yes    |      1                |    nope    |
+
+
+
+
+
+CDBI (continuous db integration)
+
+http://searchsystemschannel.techtarget.com/feature/How-to-automate-database-integration
+
+ant -f build-database.xml db:prepare
+
+db:create
+db:insert
+
+build-database.xml
+
+<target name="db:prepare" depends="db:create, db:insert"/>
+<target name="db:create" depends="filterSqlFiles" description="Create the database definition">
+  <sql 
+    driver="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://localhost:3306/"
+    userid="root"
+    password="root"
+    classpathref="db.lib.path"
+    src="${filtered.sql.dir}/database-definition.sql"
+    delimiter="/ /"/>
+</target>
+
+<target name="db:insert" depends="filterSqlFiles" description="Insert lookup and config data">
+  <sql 
+   driver="com.mysql.jdbc.Driver"
+   url="jdbc:mysql://localhost:3306/brewery"
+   userid="brewery"
+   password="brewery"
+   classpathref="db.lib.path"
+   src="${filtered.sql.dir}/database-manipulation.sql"
+   delimiter=";"/>
+</target>
