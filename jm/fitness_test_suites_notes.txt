@@ -72,3 +72,7 @@ build-database.xml
    src="${filtered.sql.dir}/database-manipulation.sql"
    delimiter=";"/>
 </target>
+
+DDD notes:
+
+http://www.archfirst.org/books/bounded-context
